@@ -86,11 +86,11 @@ A comprehensive **School Management System** designed to streamline school admin
 
 | Login | Dashboard |
 |-------|-----------|
-| ![Login](screenshots/login.png) | ![Dashboard](screenshots/dashboard.png) |
+| ![Login](https://github.com/robiulislam99/Online-School-Management-System-_SchoolMS/blob/master/ss%20of%20functionalities/sign%20in.png) | ![Dashboard](https://github.com/robiulislam99/Online-School-Management-System-_SchoolMS/blob/master/ss%20of%20functionalities/admin%20dashboard.png) |
 
 | Students | Attendance |
 |----------|-----------|
-| ![Students](screenshots/students.png) | ![Attendance](screenshots/attendance.png) |
+| ![Students](https://github.com/robiulislam99/Online-School-Management-System-_SchoolMS/blob/master/ss%20of%20functionalities/student%20dashboard.png) | ![Attendance](https://github.com/robiulislam99/Online-School-Management-System-_SchoolMS/blob/master/ss%20of%20functionalities/student%20attendence.png) |
 
 ---
 
