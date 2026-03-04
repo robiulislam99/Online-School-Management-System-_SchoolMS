@@ -1,0 +1,115 @@
+﻿@{
+    ViewData["Title"] = "Dashboard";
+}
+
+<div class="mb-4">
+    <h4 class="fw-bold"><i class="fas fa-tachometer-alt me-2 text-warning"></i>Dashboard</h4>
+    <p class="text-muted">Welcome back! Here's your school overview.</p>
+</div>
+
+<div class="row g-3 mb-4">
+    <div class="col-md-3 col-sm-6">
+        <div class="stat-card" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+            <div class="icon"><i class="fas fa-user-graduate"></i></div>
+            <h2>@ViewBag.TotalStudents</h2>
+            <p>Total Students</p>
+        </div>
+    </div>
+    <div class="col-md-3 col-sm-6">
+        <div class="stat-card" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);">
+            <div class="icon"><i class="fas fa-chalkboard-teacher"></i></div>
+            <h2>@ViewBag.TotalTeachers</h2>
+            <p>Total Teachers</p>
+        </div>
+    </div>
+    <div class="col-md-3 col-sm-6">
+        <div class="stat-card" style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);">
+            <div class="icon"><i class="fas fa-chalkboard"></i></div>
+            <h2>@ViewBag.TotalClasses</h2>
+            <p>Total Classes</p>
+        </div>
+    </div>
+    <div class="col-md-3 col-sm-6">
+        <div class="stat-card" style="background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);">
+            <div class="icon"><i class="fas fa-book"></i></div>
+            <h2>@ViewBag.TotalSubjects</h2>
+            <p>Total Subjects</p>
+        </div>
+    </div>
+</div>
+
+<div class="row g-3 mb-4">
+    <div class="col-md-4 col-sm-6">
+        <div class="stat-card" style="background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);">
+            <div class="icon"><i class="fas fa-wallet"></i></div>
+            <h2>@ViewBag.TotalExpenses.ToString("N0")</h2>
+            <p>Total Expenses (BDT)</p>
+        </div>
+    </div>
+</div>
+
+<div class="row g-3 mb-4">
+    <div class="col-12"><h5 class="fw-bold">Quick Actions</h5></div>
+    <div class="col-md-2 col-sm-4 col-6">
+        <a href="/Students/Create" class="btn btn-outline-primary w-100 d-flex flex-column align-items-center py-3 gap-2 rounded-3">
+            <i class="fas fa-user-graduate fa-lg"></i><small>Add Student</small>
+        </a>
+    </div>
+    <div class="col-md-2 col-sm-4 col-6">
+        <a href="/Teachers/Create" class="btn btn-outline-success w-100 d-flex flex-column align-items-center py-3 gap-2 rounded-3">
+            <i class="fas fa-chalkboard-teacher fa-lg"></i><small>Add Teacher</small>
+        </a>
+    </div>
+    <div class="col-md-2 col-sm-4 col-6">
+        <a href="/Classes/Create" class="btn btn-outline-warning w-100 d-flex flex-column align-items-center py-3 gap-2 rounded-3">
+            <i class="fas fa-chalkboard fa-lg"></i><small>Add Class</small>
+        </a>
+    </div>
+    <div class="col-md-2 col-sm-4 col-6">
+        <a href="/Subjects/Create" class="btn btn-outline-info w-100 d-flex flex-column align-items-center py-3 gap-2 rounded-3">
+            <i class="fas fa-book fa-lg"></i><small>Add Subject</small>
+        </a>
+    </div>
+    <div class="col-md-2 col-sm-4 col-6">
+        <a href="/Marks/Create" class="btn btn-outline-danger w-100 d-flex flex-column align-items-center py-3 gap-2 rounded-3">
+            <i class="fas fa-chart-bar fa-lg"></i><small>Add Marks</small>
+        </a>
+    </div>
+    <div class="col-md-2 col-sm-4 col-6">
+        <a href="/Expenses/Create" class="btn btn-outline-secondary w-100 d-flex flex-column align-items-center py-3 gap-2 rounded-3">
+            <i class="fas fa-wallet fa-lg"></i><small>Add Expense</small>
+        </a>
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-header d-flex justify-content-between">
+        <span><i class="fas fa-user-graduate me-2 text-primary"></i>Recent Students</span>
+        <a href="/Students" class="btn btn-sm btn-outline-primary">View All</a>
+    </div>
+    <div class="card-body p-0">
+        <div class="table-responsive">
+            <table class="table table-hover mb-0">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Roll #</th>
+                        <th>Class</th>
+                        <th>Admission Date</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var s in ViewBag.RecentStudents)
+                    {
+                        <tr>
+                            <td><i class="fas fa-user-circle text-muted me-2"></i>@s.FullName</td>
+                            <td>@(s.RollNumber ?? "-")</td>
+                            <td><span class="badge bg-primary">@s.Class.Name</span></td>
+                            <td>@s.AdmissionDate.ToString("MMM dd, yyyy")</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

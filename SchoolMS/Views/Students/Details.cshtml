@@ -1,0 +1,92 @@
+﻿@model SchoolMS.Models.Student
+@{
+    ViewData["Title"] = "Student Details";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h4 class="fw-bold"><i class="fas fa-user-graduate me-2 text-warning"></i>Student Details</h4>
+    <div>
+        <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-outline-warning me-2"><i class="fas fa-edit me-1"></i>Edit</a>
+        <a asp-action="Index" class="btn btn-outline-secondary"><i class="fas fa-arrow-left me-1"></i>Back</a>
+    </div>
+</div>
+
+<div class="row g-3">
+    <div class="col-md-4">
+        <div class="card text-center">
+            <div class="card-body py-4">
+                <div class="bg-primary text-white rounded-circle d-flex align-items-center justify-content-center mx-auto mb-3"
+                     style="width:80px;height:80px;font-size:2rem;">
+                    <i class="fas fa-user-graduate"></i>
+                </div>
+                <h5 class="fw-bold">@Model.FullName</h5>
+                <span class="badge bg-primary mb-2">@Model.Class.Name</span>
+                @if (Model.RollNumber != null)
+                {
+                    <p class="text-muted small">Roll: @Model.RollNumber</p>
+                }
+                @if (Model.GuardianName != null)
+                {
+                    <p class="text-muted small"><i class="fas fa-user-friends me-1"></i>@Model.GuardianName</p>
+                }
+                @if (Model.Phone != null)
+                {
+                    <p class="text-muted small"><i class="fas fa-phone me-1"></i>@Model.Phone</p>
+                }
+                @if (Model.DateOfBirth.HasValue)
+                {
+                    <p class="text-muted small"><i class="fas fa-birthday-cake me-1"></i>@Model.DateOfBirth.Value.ToString("MMM dd, yyyy")</p>
+                }
+            </div>
+        </div>
+
+        @{
+            var totalClasses = Model.Attendances.Count;
+            var presentClasses = Model.Attendances.Count(a => a.IsPresent);
+            var percent = totalClasses > 0 ? (presentClasses * 100 / totalClasses) : 0;
+        }
+        <div class="card mt-3">
+            <div class="card-body text-center">
+                <h6>Attendance</h6>
+                <div class="display-6 fw-bold @(percent >= 75 ? "text-success" : "text-danger")">@percent%</div>
+                <small class="text-muted">@presentClasses / @totalClasses days present</small>
+                <div class="progress mt-2" style="height:8px;">
+                    <div class="progress-bar @(percent >= 75 ? "bg-success" : "bg-danger")" style="width:@percent%"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-header"><i class="fas fa-chart-bar me-2 text-success"></i>Marks</div>
+            <div class="card-body p-0">
+                <table class="table mb-0">
+                    <thead>
+                        <tr><th>Subject</th><th>Exam Type</th><th>Obtained</th><th>Total</th><th>%</th><th>Grade</th></tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var m in Model.Marks)
+                        {
+                            var pct = m.TotalMarks > 0 ? (m.ObtainedMarks / m.TotalMarks * 100) : 0;
+                            var grade = pct >= 90 ? "A+" : pct >= 80 ? "A" : pct >= 70 ? "B" : pct >= 60 ? "C" : pct >= 50 ? "D" : "F";
+                            var badgeColor = pct >= 60 ? "success" : "danger";
+                            <tr>
+                                <td>@m.Subject.Name</td>
+                                <td>@(m.ExamType ?? "-")</td>
+                                <td>@m.ObtainedMarks</td>
+                                <td>@m.TotalMarks</td>
+                                <td>@pct.ToString("F0")%</td>
+                                <td><span class="badge bg-@badgeColor">@grade</span></td>
+                            </tr>
+                        }
+                        @if (!Model.Marks.Any())
+                        {
+                            <tr><td colspan="6" class="text-muted text-center py-3">No marks added yet</td></tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

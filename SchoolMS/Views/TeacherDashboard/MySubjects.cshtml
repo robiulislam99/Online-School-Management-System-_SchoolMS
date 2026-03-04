@@ -1,0 +1,33 @@
+﻿@model List<SchoolMS.Models.TeacherSubject>
+@{
+    ViewData["Title"] = "My Subjects";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h4 class="fw-bold"><i class="fas fa-book me-2 text-warning"></i>My Subjects</h4>
+</div>
+
+<div class="row g-3">
+    @foreach (var ts in Model)
+    {
+        <div class="col-md-4">
+            <div class="card text-center">
+                <div class="card-body py-4">
+                    <div class="bg-info text-white rounded-circle d-flex align-items-center justify-content-center mx-auto mb-3"
+                         style="width:60px;height:60px;font-size:1.5rem;">
+                        <i class="fas fa-book"></i>
+                    </div>
+                    <h6 class="fw-bold">@ts.Subject.Name</h6>
+                    <span class="badge bg-primary">@ts.Subject.Class.Name</span>
+                </div>
+            </div>
+        </div>
+    }
+    @if (!Model.Any())
+    {
+        <div class="col-12 text-center text-muted py-5">
+            <i class="fas fa-book fa-3x d-block mb-2"></i>
+            No subjects assigned to you yet.
+        </div>
+    }
+</div>

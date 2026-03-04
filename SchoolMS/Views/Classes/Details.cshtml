@@ -1,0 +1,77 @@
+﻿@model SchoolMS.Models.Class
+@{
+    ViewData["Title"] = "Class Details";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h4 class="fw-bold"><i class="fas fa-chalkboard me-2 text-warning"></i>@Model.Name - Details</h4>
+    <a asp-action="Index" class="btn btn-outline-secondary"><i class="fas fa-arrow-left me-1"></i>Back</a>
+</div>
+
+<div class="row g-3">
+    <div class="col-md-6">
+        <div class="card h-100">
+            <div class="card-header"><i class="fas fa-book me-2 text-info"></i>Subjects (@Model.Subjects.Count)</div>
+            <div class="card-body p-0">
+                <table class="table mb-0">
+                    <thead><tr><th>Subject</th><th>Description</th></tr></thead>
+                    <tbody>
+                        @foreach (var s in Model.Subjects)
+                        {
+                            <tr><td>@s.Name</td><td>@(s.Description ?? "-")</td></tr>
+                        }
+                        @if (!Model.Subjects.Any())
+                        {
+                            <tr><td colspan="2" class="text-muted text-center py-3">No subjects</td></tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="card h-100">
+            <div class="card-header"><i class="fas fa-money-bill me-2 text-success"></i>Fees (@Model.ClassFees.Count)</div>
+            <div class="card-body p-0">
+                <table class="table mb-0">
+                    <thead><tr><th>Type</th><th>Amount</th></tr></thead>
+                    <tbody>
+                        @foreach (var f in Model.ClassFees)
+                        {
+                            <tr><td>@f.FeeType</td><td>@f.Amount.ToString("N0")</td></tr>
+                        }
+                        @if (!Model.ClassFees.Any())
+                        {
+                            <tr><td colspan="2" class="text-muted text-center py-3">No fees</td></tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header"><i class="fas fa-user-graduate me-2 text-primary"></i>Students (@Model.Students.Count)</div>
+            <div class="card-body p-0">
+                <table class="table table-hover mb-0">
+                    <thead><tr><th>Roll #</th><th>Name</th><th>Guardian</th><th>Phone</th></tr></thead>
+                    <tbody>
+                        @foreach (var s in Model.Students)
+                        {
+                            <tr>
+                                <td>@(s.RollNumber ?? "-")</td>
+                                <td>@s.FullName</td>
+                                <td>@(s.GuardianName ?? "-")</td>
+                                <td>@(s.Phone ?? "-")</td>
+                            </tr>
+                        }
+                        @if (!Model.Students.Any())
+                        {
+                            <tr><td colspan="4" class="text-muted text-center py-3">No students enrolled</td></tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

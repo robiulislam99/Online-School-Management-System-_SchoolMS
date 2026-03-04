@@ -1,0 +1,69 @@
+﻿@model List<SchoolMS.Models.Teacher>
+@{
+    ViewData["Title"] = "Teachers";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h4 class="fw-bold"><i class="fas fa-chalkboard-teacher me-2 text-warning"></i>Teachers</h4>
+    <a asp-action="Create" class="btn btn-warning"><i class="fas fa-plus me-1"></i> Add Teacher</a>
+</div>
+
+<div class="row g-3">
+    @if (!Model.Any())
+    {
+        <div class="col-12 text-center text-muted py-5">
+            <i class="fas fa-users fa-3x d-block mb-2"></i>No teachers found.
+        </div>
+    }
+    @foreach (var t in Model)
+    {
+        <div class="col-md-4 col-sm-6">
+            <div class="card h-100">
+                <div class="card-body">
+                    <div class="d-flex align-items-center mb-3">
+                        <div class="bg-warning text-dark rounded-circle d-flex align-items-center justify-content-center me-3"
+                             style="width:50px;height:50px;font-size:1.3rem;">
+                            <i class="fas fa-user-tie"></i>
+                        </div>
+                        <div>
+                            <h6 class="mb-0 fw-bold">@t.FullName</h6>
+                            <small class="text-muted">@t.Email</small>
+                        </div>
+                    </div>
+                    <div class="mb-2">
+                        @if (t.TeacherSubjects.Any())
+                        {
+                            @foreach (var ts in t.TeacherSubjects.Take(3))
+                            {
+                                <span class="badge bg-light text-dark border me-1 mb-1">@ts.Subject.Name</span>
+                            }
+                            @if (t.TeacherSubjects.Count > 3)
+                            {
+                                <span class="badge bg-secondary">+@(t.TeacherSubjects.Count - 3) more</span>
+                            }
+                        }
+                        else
+                        {
+                            <small class="text-muted">No subjects assigned</small>
+                        }
+                    </div>
+                    @if (t.Phone != null)
+                    {
+                        <div class="text-muted small"><i class="fas fa-phone me-1"></i>@t.Phone</div>
+                    }
+                </div>
+                <div class="card-footer bg-transparent d-flex gap-1">
+                    <a asp-action="Details" asp-route-id="@t.Id" class="btn btn-sm btn-outline-info flex-fill"><i class="fas fa-eye"></i></a>
+                    <a asp-action="Edit" asp-route-id="@t.Id" class="btn btn-sm btn-outline-warning flex-fill"><i class="fas fa-edit"></i></a>
+                    <a asp-action="AssignSubject" asp-route-id="@t.Id" class="btn btn-sm btn-outline-success flex-fill" title="Assign Subjects">
+                        <i class="fas fa-book-open"></i>
+                    </a>
+                    <form asp-action="Delete" asp-route-id="@t.Id" method="post" class="flex-fill"
+                          onsubmit="return confirm('Delete teacher?')">
+                        <button type="submit" class="btn btn-sm btn-outline-danger w-100"><i class="fas fa-trash"></i></button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    }
+</div>

@@ -1,0 +1,80 @@
+﻿@model List<SchoolMS.Models.Teacher>
+@{
+    ViewData["Title"] = "Teacher Attendance"; var existing = ViewBag.ExistingAttendance as List<SchoolMS.Models.TeacherAttendance>; var date = (DateTime)ViewBag.Date;
+}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h4 class="fw-bold"><i class="fas fa-user-check me-2 text-warning"></i>Teacher Attendance</h4>
+    <a asp-action="ViewTeacherAttendance" class="btn btn-outline-info"><i class="fas fa-list me-1"></i>View History</a>
+</div>
+
+<div class="card mb-3">
+    <div class="card-body py-2">
+        <form method="get" class="row g-2 align-items-end">
+            <div class="col-md-4">
+                <label class="form-label">Select Date</label>
+                <input type="date" name="date" value="@ViewBag.Date?.ToString("yyyy-MM-dd")" class="form-control" />
+            </div>
+            <div class="col-md-2">
+                <button type="submit" class="btn btn-warning w-100">Load</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-header">
+        Attendance for <strong>@date.ToString("dddd, MMMM dd yyyy")</strong>
+    </div>
+    <div class="card-body">
+        <form asp-action="SaveTeacherAttendance" method="post">
+            <input type="hidden" name="date" value="@date.ToString("yyyy-MM-dd")" />
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <thead><tr><th>#</th><th>Teacher Name</th><th>Email</th><th>Status</th></tr></thead>
+                    <tbody>
+                        @foreach (var t in Model)
+                        {
+                            var isPresent = existing?.Any(a => a.TeacherId == t.Id && a.IsPresent) ?? false;
+                            <tr id="row-@t.Id" class="@(existing?.Any(a => a.TeacherId == t.Id) == true ? (isPresent ? "attendance-present" : "attendance-absent") : "")">
+                                <td>@t.Id</td>
+                                <td><i class="fas fa-user-tie me-2 text-warning"></i>@t.FullName</td>
+                                <td class="text-muted">@t.Email</td>
+                                <td>
+                                    <input type="hidden" name="teacherIds" value="@t.Id" />
+                                    <div class="form-check form-switch d-flex align-items-center gap-2">
+                                        <input class="form-check-input att-toggle" type="checkbox" name="presentIds"
+                                               value="@t.Id" @(isPresent ? "checked" : "")
+                                               data-row="row-@t.Id" style="width:2.5em;height:1.3em;" />
+                                        <label class="form-check-label att-label">@(isPresent ? "Present" : "Absent")</label>
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                        @if (!Model.Any())
+                        {
+                            <tr><td colspan="4" class="text-center text-muted py-4">No teachers found.</td></tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+            @if (Model.Any())
+            {
+                <button type="submit" class="btn btn-warning px-4"><i class="fas fa-save me-1"></i>Save Attendance</button>
+            }
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        document.querySelectorAll('.att-toggle').forEach(cb => {
+            cb.addEventListener('change', function () {
+                const row = document.getElementById(this.dataset.row);
+                const label = this.closest('.form-check').querySelector('.att-label');
+                if (this.checked) { row.className = 'attendance-present'; label.textContent = 'Present'; }
+                else { row.className = 'attendance-absent'; label.textContent = 'Absent'; }
+            });
+        });
+    </script>
+}

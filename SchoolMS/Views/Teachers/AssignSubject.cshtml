@@ -1,0 +1,23 @@
+﻿@{
+    ViewData["Title"] = "Assign Subjects"; var teacher = ViewBag.Teacher as SchoolMS.Models.Teacher;
+}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h4 class="fw-bold"><i class="fas fa-book-open me-2 text-warning"></i>Assign Subjects - @teacher?.FullName</h4>
+    <a asp-action="Index" class="btn btn-outline-secondary"><i class="fas fa-arrow-left me-1"></i>Back</a>
+</div>
+
+<div class="card" style="max-width:600px;">
+    <div class="card-body">
+        <form asp-action="AssignSubject" asp-route-id="@teacher?.Id" method="post">
+            <div class="mb-3">
+                <label class="form-label fw-bold">Select Subjects</label>
+                <small class="text-muted d-block mb-2">Hold Ctrl (Windows) or Cmd (Mac) to select multiple subjects</small>
+                <select name="subjectIds" asp-items="ViewBag.Subjects" class="form-select" multiple style="height:200px;"></select>
+            </div>
+            <button type="submit" class="btn btn-warning px-4">
+                <i class="fas fa-save me-1"></i>Save Assignment
+            </button>
+        </form>
+    </div>
+</div>

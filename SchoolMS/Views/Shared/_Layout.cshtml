@@ -1,0 +1,281 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - School Management System</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+</head>
+<body>
+
+    @if (User.Identity!.IsAuthenticated)
+    {
+        <div class="d-flex" id="wrapper">
+
+            <!-- ========== SIDEBAR ========== -->
+            <div id="sidebar" class="bg-dark text-white d-flex flex-column">
+
+                <!-- Logo -->
+                <div class="sidebar-brand p-3 border-bottom border-secondary">
+                    <i class="fas fa-school me-2 text-warning"></i>
+                    <span class="fw-bold">SchoolMS</span>
+                </div>
+
+                <!-- Navigation Links -->
+                <nav class="sidebar-nav flex-grow-1 p-2">
+
+                    @if (User.IsInRole("Admin"))
+                    {
+                        <!-- MAIN -->
+                        <div class="nav-section">
+                            <small class="text-muted px-2">MAIN</small>
+                            <a href="/Dashboard" class="nav-item @(ViewContext.RouteData.Values["controller"]?.ToString() == "Dashboard" ? "active" : "")">
+                                <i class="fas fa-tachometer-alt"></i> Dashboard
+                            </a>
+                        </div>
+
+                        <!-- ACADEMICS -->
+                        <div class="nav-section mt-2">
+                            <small class="text-muted px-2">ACADEMICS</small>
+                            <a href="/Classes" class="nav-item @(ViewContext.RouteData.Values["controller"]?.ToString() == "Classes" ? "active" : "")">
+                                <i class="fas fa-chalkboard"></i> Classes
+                            </a>
+                            <a href="/Subjects" class="nav-item @(ViewContext.RouteData.Values["controller"]?.ToString() == "Subjects" ? "active" : "")">
+                                <i class="fas fa-book"></i> Subjects
+                            </a>
+                            <a href="/ClassFees" class="nav-item @(ViewContext.RouteData.Values["controller"]?.ToString() == "ClassFees" ? "active" : "")">
+                                <i class="fas fa-money-bill"></i> Class Fees
+                            </a>
+                        </div>
+
+                        <!-- PEOPLE -->
+                        <div class="nav-section mt-2">
+                            <small class="text-muted px-2">PEOPLE</small>
+                            <a href="/Teachers" class="nav-item @(ViewContext.RouteData.Values["controller"]?.ToString() == "Teachers" ? "active" : "")">
+                                <i class="fas fa-chalkboard-teacher"></i> Teachers
+                            </a>
+                            <a href="/Students" class="nav-item @(ViewContext.RouteData.Values["controller"]?.ToString() == "Students" ? "active" : "")">
+                                <i class="fas fa-user-graduate"></i> Students
+                            </a>
+                        </div>
+
+                        <!-- RECORDS -->
+                        <div class="nav-section mt-2">
+                            <small class="text-muted px-2">RECORDS</small>
+                            <a href="/Marks" class="nav-item @(ViewContext.RouteData.Values["controller"]?.ToString() == "Marks" ? "active" : "")">
+                                <i class="fas fa-chart-bar"></i> Marks
+                            </a>
+                            <a href="/Attendance/TeacherAttendance" class="nav-item @(ViewContext.RouteData.Values["controller"]?.ToString() == "Attendance" && ViewContext.RouteData.Values["action"]?.ToString() == "TeacherAttendance" ? "active" : "")">
+                                <i class="fas fa-user-check"></i> Teacher Attendance
+                            </a>
+                            <a href="/Attendance/StudentAttendance" class="nav-item @(ViewContext.RouteData.Values["controller"]?.ToString() == "Attendance" && ViewContext.RouteData.Values["action"]?.ToString() == "StudentAttendance" ? "active" : "")">
+                                <i class="fas fa-calendar-check"></i> Student Attendance
+                            </a>
+                            <a href="/Expenses" class="nav-item @(ViewContext.RouteData.Values["controller"]?.ToString() == "Expenses" ? "active" : "")">
+                                <i class="fas fa-wallet"></i> Expenses
+                            </a>
+                        </div>
+                    }
+
+                    @if (User.IsInRole("Teacher"))
+                    {
+                        <div class="nav-section">
+                            <small class="text-muted px-2">MAIN</small>
+                            <a href="/TeacherDashboard" class="nav-item @(ViewContext.RouteData.Values["controller"]?.ToString() == "TeacherDashboard" && ViewContext.RouteData.Values["action"]?.ToString() == "Index" ? "active" : "")">
+                                <i class="fas fa-tachometer-alt"></i> Dashboard
+                            </a>
+                            <a href="/TeacherDashboard/MySubjects" class="nav-item @(ViewContext.RouteData.Values["action"]?.ToString() == "MySubjects" ? "active" : "")">
+                                <i class="fas fa-book"></i> My Subjects
+                            </a>
+                            <a href="/Attendance/StudentAttendance" class="nav-item @(ViewContext.RouteData.Values["action"]?.ToString() == "StudentAttendance" ? "active" : "")">
+                                <i class="fas fa-calendar-check"></i> Take Attendance
+                            </a>
+                            <a href="/Attendance/ViewStudentAttendance" class="nav-item @(ViewContext.RouteData.Values["action"]?.ToString() == "ViewStudentAttendance" ? "active" : "")">
+                                <i class="fas fa-list-check"></i> View Attendance
+                            </a>
+                            <a href="/TeacherDashboard/ViewMarks" class="nav-item @(ViewContext.RouteData.Values["action"]?.ToString() == "ViewMarks" ? "active" : "")">
+                                <i class="fas fa-chart-bar"></i> Student Marks
+                            </a>
+                        </div>
+                    }
+
+                </nav>
+
+                <!-- User Info & Logout -->
+                <div class="p-3 border-top border-secondary">
+                    <div class="d-flex align-items-center mb-2">
+                        <div class="avatar-sm bg-warning text-dark rounded-circle d-flex align-items-center justify-content-center me-2">
+                            <i class="fas fa-user"></i>
+                        </div>
+                        <small class="text-white text-truncate">@User.Identity.Name</small>
+                    </div>
+                    <form asp-controller="Account" asp-action="Logout" method="post">
+                        <button type="submit" class="btn btn-outline-danger btn-sm w-100">
+                            <i class="fas fa-sign-out-alt me-1"></i> Logout
+                        </button>
+                    </form>
+                </div>
+
+            </div>
+            <!-- ========== END SIDEBAR ========== -->
+            <!-- ========== MAIN CONTENT ========== -->
+            <div id="page-content" class="flex-grow-1">
+
+                <!-- Top Bar -->
+                <div class="top-bar bg-white border-bottom px-4 py-2 d-flex justify-content-between align-items-center">
+                    <button id="sidebarToggle" class="btn btn-outline-secondary btn-sm">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                    <div class="d-flex align-items-center gap-3">
+                        <span class="badge bg-primary">
+                            @(User.IsInRole("Admin") ? "Admin" : "Teacher")
+                        </span>
+                        <span class="text-muted small d-none d-md-block">
+                            @DateTime.Now.ToString("dddd, MMMM dd yyyy")
+                        </span>
+                        <button class="btn btn-warning btn-sm" onclick="toggleAIChat()">
+                            <i class="fas fa-robot me-1"></i> AI Help
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Alert Messages -->
+                <div class="px-4 pt-3">
+                    @if (TempData["Success"] != null)
+                    {
+                        <div class="alert alert-success alert-dismissible fade show" role="alert">
+                            <i class="fas fa-check-circle me-2"></i>@TempData["Success"]
+                            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                        </div>
+                    }
+                    @if (TempData["Error"] != null)
+                    {
+                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                            <i class="fas fa-exclamation-circle me-2"></i>@TempData["Error"]
+                            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                        </div>
+                    }
+                </div>
+
+                <!-- Page Body -->
+                <div class="p-4">
+                    @RenderBody()
+                </div>
+
+            </div>
+            <!-- ========== END MAIN CONTENT ========== -->
+
+        </div>
+
+        <!-- ========== AI CHAT WIDGET ========== -->
+        <div id="ai-chat-widget" class="d-none">
+            <div class="ai-chat-header bg-warning text-dark d-flex justify-content-between align-items-center p-2">
+                <span><i class="fas fa-robot me-2"></i><strong>AI School Assistant</strong></span>
+                <button class="btn btn-sm text-dark border-0" onclick="toggleAIChat()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div id="ai-chat-messages" class="ai-chat-body p-2"></div>
+            <div class="ai-chat-footer p-2 border-top bg-light">
+                <div class="input-group">
+                    <input type="text" id="ai-input" class="form-control form-control-sm"
+                           placeholder="Ask anything about school..." />
+                    <button class="btn btn-warning btn-sm" onclick="sendAIMessage()">
+                        <i class="fas fa-paper-plane"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <!-- ========== END AI CHAT WIDGET ========== -->
+    }
+    else
+    {
+        @RenderBody()
+    }
+
+    <!-- Scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+
+    <script>
+        // ===== SIDEBAR TOGGLE =====
+        document.getElementById('sidebarToggle')?.addEventListener('click', () => {
+            const sidebar = document.getElementById('sidebar');
+            if (window.innerWidth <= 768) {
+                sidebar.classList.toggle('mobile-open');
+            } else {
+                sidebar.classList.toggle('collapsed');
+            }
+        });
+
+        // ===== AI CHAT =====
+        function toggleAIChat() {
+            const widget = document.getElementById('ai-chat-widget');
+            widget.classList.toggle('d-none');
+            if (!widget.classList.contains('d-none')) {
+                document.getElementById('ai-input').focus();
+            }
+        }
+
+        async function sendAIMessage() {
+            const input = document.getElementById('ai-input');
+            const msg = input.value.trim();
+            if (!msg) return;
+
+            const messagesDiv = document.getElementById('ai-chat-messages');
+
+            // Show user message
+            messagesDiv.innerHTML += `
+                <div class="chat-bubble user mb-2">
+                    <strong>You:</strong> ${msg}
+                </div>`;
+            input.value = '';
+
+            // Show loading
+            messagesDiv.innerHTML += `
+                <div class="chat-bubble bot mb-2" id="ai-loading">
+                    <i class="fas fa-spinner fa-spin me-1"></i> Thinking...
+                </div>`;
+            messagesDiv.scrollTop = messagesDiv.scrollHeight;
+
+            try {
+                const resp = await fetch('/AIChat/SendMessage', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ message: msg })
+                });
+                const data = await resp.json();
+
+                // Remove loading
+                const loading = document.getElementById('ai-loading');
+                if (loading) loading.remove();
+
+                // Show AI reply
+                messagesDiv.innerHTML += `
+                    <div class="chat-bubble bot mb-2">
+                        <strong><i class="fas fa-robot me-1"></i>AI:</strong> ${data.message}
+                    </div>`;
+            } catch (err) {
+                const loading = document.getElementById('ai-loading');
+                if (loading) loading.remove();
+                messagesDiv.innerHTML += `
+                    <div class="chat-bubble bot mb-2 text-danger">
+                        <strong>Error:</strong> Could not connect to AI service.
+                    </div>`;
+            }
+
+            messagesDiv.scrollTop = messagesDiv.scrollHeight;
+        }
+
+        // Send on Enter key
+        document.getElementById('ai-input')?.addEventListener('keypress', function (e) {
+            if (e.key === 'Enter') sendAIMessage();
+        });
+    </script>
+
+    @RenderSection("Scripts", required: false)
+
+</body>
+</html>

@@ -1,0 +1,39 @@
+﻿@model List<SchoolMS.Models.StudentMark>
+@{
+    ViewData["Title"] = "Student Marks";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h4 class="fw-bold"><i class="fas fa-chart-bar me-2 text-warning"></i>Student Marks</h4>
+</div>
+
+<div class="card">
+    <div class="card-body p-0">
+        <div class="table-responsive">
+            <table class="table table-hover mb-0">
+                <thead>
+                    <tr><th>Student</th><th>Class</th><th>Subject</th><th>Exam</th><th>Obtained</th><th>Total</th><th>%</th></tr>
+                </thead>
+                <tbody>
+                    @if (!Model.Any())
+                    {
+                        <tr><td colspan="7" class="text-center text-muted py-4">No marks found for your classes.</td></tr>
+                    }
+                    @foreach (var m in Model)
+                    {
+                        var pct = m.TotalMarks > 0 ? (m.ObtainedMarks / m.TotalMarks * 100) : 0;
+                        <tr>
+                            <td>@m.Student.FullName</td>
+                            <td><span class="badge bg-primary">@m.Student.Class.Name</span></td>
+                            <td>@m.Subject.Name</td>
+                            <td>@(m.ExamType ?? "-")</td>
+                            <td class="fw-bold">@m.ObtainedMarks</td>
+                            <td>@m.TotalMarks</td>
+                            <td><span class="badge @(pct >= 60 ? "bg-success" : "bg-danger")">@pct.ToString("F0")%</span></td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

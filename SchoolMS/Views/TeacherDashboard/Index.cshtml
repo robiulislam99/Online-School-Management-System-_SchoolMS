@@ -1,0 +1,73 @@
+﻿@model SchoolMS.Models.Teacher
+@{
+    ViewData["Title"] = "Teacher Dashboard";
+}
+
+<div class="mb-4">
+    <h4 class="fw-bold"><i class="fas fa-tachometer-alt me-2 text-warning"></i>Welcome, @Model.FullName!</h4>
+    <p class="text-muted">Here's your teaching overview.</p>
+</div>
+
+<div class="row g-3 mb-4">
+    <div class="col-md-4 col-sm-6">
+        <div class="stat-card" style="background:linear-gradient(135deg,#667eea,#764ba2);">
+            <div class="icon"><i class="fas fa-book"></i></div>
+            <h2>@Model.TeacherSubjects.Count</h2>
+            <p>Assigned Subjects</p>
+        </div>
+    </div>
+    <div class="col-md-4 col-sm-6">
+        <div class="stat-card" style="background:linear-gradient(135deg,#43e97b,#38f9d7);">
+            <div class="icon"><i class="fas fa-calendar-check"></i></div>
+            <h2>@ViewBag.TodayAttendance</h2>
+            <p>Today's Attendance Records</p>
+        </div>
+    </div>
+</div>
+
+<div class="row g-3 mb-4">
+    <div class="col-12"><h5 class="fw-bold">Quick Actions</h5></div>
+    <div class="col-md-3 col-sm-6">
+        <a href="/Attendance/StudentAttendance" class="btn btn-outline-success w-100 d-flex flex-column align-items-center py-3 gap-2 rounded-3">
+            <i class="fas fa-calendar-check fa-lg"></i><small>Take Attendance</small>
+        </a>
+    </div>
+    <div class="col-md-3 col-sm-6">
+        <a href="/Attendance/ViewStudentAttendance" class="btn btn-outline-info w-100 d-flex flex-column align-items-center py-3 gap-2 rounded-3">
+            <i class="fas fa-list-check fa-lg"></i><small>View Attendance</small>
+        </a>
+    </div>
+    <div class="col-md-3 col-sm-6">
+        <a href="/TeacherDashboard/ViewMarks" class="btn btn-outline-warning w-100 d-flex flex-column align-items-center py-3 gap-2 rounded-3">
+            <i class="fas fa-chart-bar fa-lg"></i><small>View Marks</small>
+        </a>
+    </div>
+    <div class="col-md-3 col-sm-6">
+        <a href="/TeacherDashboard/MySubjects" class="btn btn-outline-primary w-100 d-flex flex-column align-items-center py-3 gap-2 rounded-3">
+            <i class="fas fa-book fa-lg"></i><small>My Subjects</small>
+        </a>
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-header"><i class="fas fa-book me-2 text-info"></i>My Assigned Subjects</div>
+    <div class="card-body p-0">
+        <table class="table table-hover mb-0">
+            <thead><tr><th>Subject</th><th>Class</th><th>Since</th></tr></thead>
+            <tbody>
+                @foreach (var ts in Model.TeacherSubjects)
+                {
+                    <tr>
+                        <td><i class="fas fa-book text-info me-2"></i>@ts.Subject.Name</td>
+                        <td><span class="badge bg-primary">@ts.Subject.Class.Name</span></td>
+                        <td>@ts.AssignedAt.ToString("MMM dd, yyyy")</td>
+                    </tr>
+                }
+                @if (!Model.TeacherSubjects.Any())
+                {
+                    <tr><td colspan="3" class="text-muted text-center py-3">No subjects assigned yet.</td></tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
